@@ -58,6 +58,7 @@ struct SampleWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             SampleWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
+                .widgetURL(URL(string: "SampleWidget:///\(entry.configuration.favoriteEmoji)"))
         }
     }
 }

@@ -27,9 +27,18 @@ struct ContinueUserActivityWidgetApp: App {
                 .onContinueUserActivity("ConfigurationAppIntent") { userActivity in
                     handleUserActivity(userActivity)
                 }
+                .onOpenURL { url in
+                    guard let scheme = url.scheme,
+                          scheme.contains("SampleWidget") else {
+                        return
+                    }
+
+                    let favoriteEmoji = url.lastPathComponent
+                    NotificationCenter.default.post(name: .favoriteEmoji, object: "From URL \(favoriteEmoji)")
+                }
         }
     }
-    
+
     func handleUserActivity(_ userActivity: NSUserActivity) {
         guard let configuration: ConfigurationAppIntent = userActivity
             .widgetConfigurationIntent() else {
@@ -37,6 +46,6 @@ struct ContinueUserActivityWidgetApp: App {
             return
         }
         let favoriteEmoji = configuration.favoriteEmoji
-        NotificationCenter.default.post(name: .favoriteEmoji, object: favoriteEmoji)
+        NotificationCenter.default.post(name: .favoriteEmoji, object: "From UA \(favoriteEmoji)")
     }
 }
